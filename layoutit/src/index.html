@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>getMusicx3</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+  <style id="__web-inspector-hide-shortcut-style__" type="text/css">
+.__web-inspector-hide-shortcut__, .__web-inspector-hide-shortcut__ *, .__web-inspector-hidebefore-shortcut__::before, .__web-inspector-hideafter-shortcut__::after
+{
+    visibility: hidden !important;
+}
+</style>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+
+
+<script>
+    function clearthisShit(){ 
+		$("#Sammlung").empty();
+    };
+	$( document ).ready(function() {
+	$("#liveSuche").keyup(function(){
+ 
+             var liveSuche = $(this).val();
+ 
+        
+        $("#Sammlung div").each(function(){
+ 
+          
+            if ($(this).text().search(new RegExp(liveSuche, "i")) < 0) {
+                $(this).fadeOut();
+            }
+			else {
+                $(this).show();
+            }
+        });
+	});
+	});
+  	function sortAlbum(imgsrc, titel, artist, id){}; 
+    function idCheck(id){console.log(id);};
+	
+	function buttonClicked(buttonID)
+	{
+			console.log(buttonID);
+			addImage("https://i1.sndcdn.com/artworks-000140098335-4qnzmi-t500x500.jpg","titletest","artisttest",0);
+	}
+	
+  	function addImage(imgsrc, titel, artist, id){
+    $('<div class="col-md-4" id="0" onClick="idCheck('+id+')"> \
+		<img src="'+ imgsrc + '" "heigth="auto" width="auto" class="img-circle" alt=""> \
+		<h4 class="text" alt="'+ titel +'">'+ titel +'</h4> \
+		<p class="text-muted" alt="'+ artist +'">'+ artist +'</p>\
+		</div>').appendTo('#Sammlung');
+	};
+
+
+
+</script>
+
+</head>
+
+  <body class="" >
+  
+  <nav class="navbar navbar navbar-fixed-top"> <!-- die bilder Ã¼berlappen sich mit der navbar, hab ich irgendwas verkackt mach das mal wieder richtig :D -->
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a  href="#"><img class="navbar-brand" src="logo.png"></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+          <ul class="nav navbar-nav navbar-right">
+             <li id="User" onclick="clearthisShit()"><a href="#"> <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+      		<li><a href="#" data-toggle="modal" data-target="#basicModal"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
+			 <li id="AddSong" onclick="Songlink()"><a>Add Song</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search..." id="liveSuche">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+<!-- /.navbar-collapse -->
+                
+<!--   Ab hier der Modalscheiss               -->
+    <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">?</button>
+                <h4 class="modal-title" id="myModalLabel">Basic Modal</h4>
+            </div>
+            <div class="modal-body">
+                <h3>Modal Body</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+           
+<p></p>
+<!-- /.container-fluid -->
+
+    <div class="container-fluid">
+	
+	<div class="row text-center">
+		<div class="col-md-12">
+			<div class="row" id="Sammlung">
+			           
+	</div>	</div>	</div>
+	
+			<nav class="navbar navbar-default navbar-fixed-bottom" style = "letter-spacing: 1.5px" role="navigation">
+		<ul class="nav nav-pills nav-justified">
+  
+  <li class="active"><a onclick="buttonClicked(0)">Song</a></li>
+  <li><a onclick="buttonClicked(1)">Album</a></li>
+  <li><a onclick="buttonClicked(2)">Artist</a></li>
+  <li><a onclick="buttonClicked(3)">Queue</a></li>
+</ul>
+		
+		</nav>
+
+
+
+
+  
+</body></html>
