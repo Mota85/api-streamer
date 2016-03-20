@@ -1,0 +1,144 @@
+<html><head><meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Bootstrap 3, from LayoutIt!</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+  <style id="__web-inspector-hide-shortcut-style__" type="text/css">
+.__web-inspector-hide-shortcut__, .__web-inspector-hide-shortcut__ *, .__web-inspector-hidebefore-shortcut__::before, .__web-inspector-hideafter-shortcut__::after
+{
+    visibility: hidden !important;
+}
+</style></head>
+  <body class="" style="">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+          <ul class="nav navbar-nav navbar-right">
+             <li id="User" onclick="divFunction()"><a href="#"> <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+      		<li><a href="#" data-toggle="modal" data-target="#basicModal"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
+  <li id="Add Song" onclick="divFunction()"><a>Add Song</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+<!-- /.navbar-collapse -->
+                
+<!--   Ab hier der Modalscheiss               -->
+    <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Basic Modal</h4>
+            </div>
+            <div class="modal-body">
+                <h3>Modal Body</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+           
+<!-- /.container-fluid -->
+
+    <div class="container-fluid">
+	
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+			           
+	<div class="col-md-3" id="0">
+					 
+             <img src="http://www.josepvinaixa.com/blog/wp-content/uploads/2015/12/Justin-Bieber-Love-Yourself-2015.jpg" heigth="100%" width="100%" class="img-circle" alt="Bild">
+              <h4 class="text-center" alt="Titel">Title</h4>
+                <p class="text-center text-muted" alt="Name">Artist Name</p>
+
+	</div>		
+	<div class="col-md-3" id="1">
+					 
+             <img src="https://cinqueterre.a-turist.com/images/cinque_terre_vernazza.jpg" alt="Bild" class="img-circle" width="100%" heigth="100">
+              <h4 class="text-center" alt="Titel">Title</h4>
+                <p class="text-center text-muted" alt="Name">Artist Name</p>
+
+	</div>	
+	<div class="col-md-4">
+					 
+             <img src="https://cinqueterre.a-turist.com/images/cinque_terre_vernazza.jpg" alt="Bild" class="img-circle" width="100%" heigth="auto">
+              <h4 class="text-center" alt="Titel">Title</h4>
+                <p class="text-center text-muted" alt="Name">Artist Name</p>
+
+	</div>				
+
+</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+				<div class="navbar-header">
+					 
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button> 
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+ 	 <div class="btn-group btn-group-justified" role="group" aria-label="...">
+ 		 <div class="btn-group" role="group">
+   			 <button type="button" class="btn btn-default navbar-btn">Song</button>
+ 	 	</div>
+	  	<div class="btn-group" role="group">
+ 			   <button type="button" class="btn btn-default navbar-btn">Album</button>
+ 	 	</div>
+ 	 	<div class="btn-group" role="group">
+   				 <button type="button" class="btn btn-default navbar-btn">Artist</button>
+ 	 	</div>
+    	<div class="btn-group" role="group">
+   				 <button type="button" class="btn btn-default navbar-btn">Queue</button>
+ 		 </div>
+	</div>
+ 
+					
+						
+						
+					</ul>
+					
+					
+				</div>
+				
+			</nav>
+		</div>
+	</div>
+</div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+  
+</body></html>
