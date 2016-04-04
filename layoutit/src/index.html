@@ -55,11 +55,11 @@
 			addImage("https://i1.sndcdn.com/artworks-000140098335-4qnzmi-t500x500.jpg","titletest","artisttest",0);
 	}
 	
-  	function addImage(imgsrc, titel, artist, id){
+  	function addImage(imgsrc, title, artist, id){
     $('<div class="col-md-4" id="0" onClick="idCheck('+id+')"> \
-		<img src="'+ imgsrc + '" "heigth="auto" width="auto" class="img-circle" alt=""> \
-		<h4 class="text" alt="'+ titel +'">'+ titel +'</h4> \
-		<p class="text-muted" alt="'+ artist +'">'+ artist +'</p>\
+		<img src="'+ imgsrc + '" "heigth="auto" width="auto" class="img-circle" alt="'+title+'"> \
+		<h4 class="text" alt="'+ title +'">'+ title +'</h4> \
+		<p class="text-muted" alt="Unknown">'+ artist +'</p>\
 		</div>').appendTo('#Sammlung');
 	};
 
@@ -132,7 +132,7 @@
 			<nav class="navbar navbar-default navbar-fixed-bottom" style = "letter-spacing: 1.5px" role="navigation">
 		<ul class="nav nav-pills nav-justified">
   
-  <li class="active"><a onclick="buttonClicked(0)">Song</a></li>
+  <li><a onclick="buttonClicked(0)">Song</a></li>
   <li><a onclick="buttonClicked(1)">Album</a></li>
   <li><a onclick="buttonClicked(2)">Artist</a></li>
   <li><a onclick="buttonClicked(3)">Queue</a></li>
