@@ -13,32 +13,37 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
-  <style id="__web-inspector-hide-shortcut-style__" type="text/css">
-.__web-inspector-hide-shortcut__, .__web-inspector-hide-shortcut__ *, .__web-inspector-hidebefore-shortcut__::before, .__web-inspector-hideafter-shortcut__::after
-{
-    visibility: hidden !important;
-}
-
-</style>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/scripts.js"></script>
-
-
+	<script type="text/javascript" src="qwebchannel.js"></script>
+	 
 <script>
-    function clearthisShit(){ 
-		$("#Sammlung").empty();
-    };
-	
-	$( document ).ready(function() {
+	 
+	 var widget ;
 
+      function initialize() { 
+        if (typeof qt != 'undefined') new QWebChannel(qt.webChannelTransport, function(channel) {
+            widget = channel.objects.widget;
+        } );
+      }
+	  
+	$( document ).ready(function() {
+	
+	$('.carousel').carousel({
+	interval: false
+	});
+	
+	
+	$('#addSongInput').on('input', function() { 
+		widget.searchForURL($(this).val());	
+	});
+	
 	$("#liveSuche").keyup(function(){
  
              var liveSuche = $(this).val();
  
-        
         $("#Sammlung div").each(function(){
- 
           
             if ($(this).text().search(new RegExp(liveSuche, "i")) < 0) {
                 $(this).fadeOut();
@@ -55,11 +60,30 @@
 	
 	function buttonClicked(buttonID)
 	{
-			console.log(buttonID);
-			//addImage("https://i1.sndcdn.com/artworks-000140098335-4qnzmi-t500x500.jpg","titletest","artisttest",0);
-			addToTable("https://i1.sndcdn.com/artworks-000140098335-4qnzmi-t500x500.jpg","titletest","artisttest","adfasdf");
-	}
+			widget.buttonClicked(buttonID);
+	};
 	
+	jQuery(document).ready(function ($) {
+        $('#tabtest').tab();
+    });
+
+	$(function() {
+    function reposition() {
+        var modal = $(this),
+            dialog = modal.find('.modal-dialog');
+        modal.css('display', 'block');
+        
+        // Dividing by two centers the modal exactly, but dividing by three 
+        // or four works better for larger screens.
+        dialog.css("margin-top", Math.max(0, ($(window).height() - dialog.height()) / 2));
+    }
+    // Reposition when a modal is shown
+    $('.modal').on('show.bs.modal', reposition);
+    // Reposition when the window is resized
+    $(window).on('resize', function() {
+        $('.modal:visible').each(reposition);
+    });
+});
   	function addImage(imgsrc, title, artist, id){
     $('<div class="col-sm-3" id="0" onClick="idCheck('+id+')"> \
 		<img src="'+ imgsrc + '" "heigth="200px" width="200px" class="img-circle" alt="'+title+'"> \
@@ -67,7 +91,7 @@
 		<p class="text-muted" alt="Unknown">'+ artist +'</p>\
 		</div>').appendTo('#Sammlung');
 	};
-	function addToTable(imgsrc, title, artist, album ){
+	function addToTable(imgsrc, title, artist, album, id ){
 			
 			$('<tr> \
 			    <td style="width:50px"><img src="' + imgsrc + '" heigth="50px" width="50px" class="" alt="'+title+'"></td>\
@@ -75,18 +99,76 @@
 				<td style = "vertical-align: middle;">' + artist + '</td>\
 				<td style = "vertical-align: middle;">' + album + '</td>	\
 				<td style = "vertical-align: bottom;">\
-				<div class="progress" style = "width:80%">\
-					<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"> </div> \
+				<div class="progress" >\
+					<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 100%"> </div> \
 				</div>\
-				</td> </tr>').appendTo('#tableQ');
-		};
-
+				</td>\
+				<td style = "vertical-align: middle;">\
+				<p class="text-center">\
+							<a href="#"><span style = "padding-right: 10px;" class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a> \
+							<a href="#"><span style = "padding-right: 10px;" class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>\
+							<a href="#"><span style = "" class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>		\
+				</p></td> \
+				</tr>').appendTo('#tableQ');		
+	};
+	
+	function openModal( image, artist, album, year)
+	{
+		$("#modalCover").attr("src",image);
+		$('a#modalArtist').text(artist);
+		$('#modalYear').text(year);
+		$('#modalAlbum').text(album);
+		
+		$('#albumModal').modal('show');
+	};
+	
+	function addTrackToTracklist(position, name)
+	{
+		$('<tr>\
+			<td >'+ position + '</td>\
+			<td>'+ name +'</td>\
+			<td>\
+			<p class="text-right">\
+			<a href="#"><span style = "padding-right: 10px;" class="glyphicon glyphicon-folder-open" aria-hidden="true"></span></a>\
+			<a href="#"><span style = "padding-right: 10px;" class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>\
+			<a href="#"><span style = "" class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>\
+			</p> </td>	</tr>').appendTo('#modalTracklist');
+	};
+	function openBrowser(link)
+	{
+		widget.openBrowser(link);
+	}
+	
+	function addQueryClicked()
+	{
+		widget.addQueryClicked($("#addSongInput").val(), $(".item.active>span").text());			
+	}
+	
+	function addToCarousel(image, text,uri, link, active)
+	{
+		if(active == false)
+		{
+			$('<div class="item">\
+			<span class="hide">' + uri + '</span>\
+			<a href="#" onclick= "openBrowser(\'https://www.discogs.com' + link + '\');" ><img class="img-rounded img-responsive center-block" src="' + image + '" alt="..."></a>\
+			<h4 style = "text-align:center;padding-top:20px;letter-spacing:1.5px;" >' + text + '</h4>\
+			</div>').appendTo('#AlbumCarouselBody');
+		}
+		else
+		{
+			$('<div class="item active">\
+			<span class="hide">' + uri + '</span>\
+			<a href="#" onclick= "openBrowser(\'https://www.discogs.com' + link + '\');" ><img class="img-rounded img-responsive center-block" src="' + image + '" alt="..."></a>\
+			<h4 style = "text-align:center;padding-top:20px;letter-spacing:1.5px;" >' + text + '</h4>\
+			</div>').appendTo('#AlbumCarouselBody');
+		}
+		
+	}
+	
 </script>
 
 </head>
-
-  <body class="" >
-  
+  <body onload="initialize()" >
   <nav class="navbar navbar-default navbar-fixed-top"> 
       <div class="container-fluid">
         <div class="navbar-header">
@@ -100,109 +182,59 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
           <ul class="nav navbar-nav navbar-right">
-             <li id="User" onclick="clearthisShit()"><a href="#"> <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
-      		<li><a href="#" data-toggle="modal" data-target="#basicModal"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
-				<li><a href="#" data-toggle="modal" data-target="#basicModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
+             <li id="User" data-toggle="modal" data-target="#accountModal"><a href="#"> <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+      		<li><a href="#" data-toggle="modal" data-target="#settingsModal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
+				<li><a href="#" data-toggle="modal" data-target="#addLinkModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
           </ul>
           <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search..." id="liveSuche">
+            <input type="text" class="form-control" placeholder="Search your music library..." id="liveSuche">
           </form>
         </div>
       </div>
     </nav>
 
-
-    <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="display: none;">
+    <div class="modal fade" id="albumModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                <h4 class="modal-title" id="myModalLabel">Purpose </h4>
+				<h4 class="modal-title" id="modalAlbum">Purpose </h4>
             </div>
-            <div class="modal-body">
-               
+            
+			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-3">
-				
-					<div>
-					
-					<img class="img-rounded" src="https://i1.sndcdn.com/artworks-000140098335-4qnzmi-t500x500.jpg" heigth="150px" width="150px" class="" alt="'+title+'">
+						<img id="modalCover" class="img-rounded" src="" heigth="150px" width="150px" class="" alt="'+title+'">
+						
+						<div style = "padding-top:20px">
+							<a class="btn btn-default" style = "width: 150px" href="#" role="button">change cover</a>
+						</div>
+						
+						<div style = "padding-top:20px">
+							<p><b>Artist: </b><a  id="modalArtist" class="" style = "width: 150px" href="#" role="button">Justin Bieber</a></p>
+							<p><b>Year:</b> <span id="modalYear" >2014</span></p>
+						</div>
 					</div>
 					
-					<div style = "padding-top:20px">
-					<a class="btn btn-default" style = "width: 150px" href="#" role="button">change cover</a>
-					</div>
-					
-					<div style = "padding-top:20px">
-				
-					<p><a class="" style = "width: 150px" href="#" role="button"><b>Artist: </b>Justin Bieber</a></p>
-					<p><a class="" style = "width: 150px" href="#" role="button"><b>Year: </b>2014</a></p>
-					
-					</div>
-				
-					
-					</div>
-					<div class="col-md-9">
-					<h3>Tracklist</h3>
-						<div class="row" style="padding-right:30px">
-							
-							<table class="table">
+					<div class="col-md-9">	
+						<div class="row" style="padding-right:30px">	
+						<table class="table">
+							<caption><h3 >Tracklist</h3><caption>
 							<thead> 
-								<tr> 
 								<th>#</th>
 								<th>Name</th>
 								<th></th>
-								</tr>
-							
 							</thead>
-							<tr>
-							<th scope="row" >1</th>
-							<td>Track1</td>
-							<td>
-							<p class="text-right">
 							
-							<span style = "padding-right: 10px;" class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-							<span style = "padding-right: 10px;" class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-							<span style = "" class="glyphicon glyphicon-trash" aria-hidden="true"></span></p>		
-							
-							</td>
-							
-							
-							</tr>
-							<tr>
-							<th scope="row" >1</th>
-							<td>Track1</td>
-							<td>
-							<p class="text-right">
-							
-							<span style = "padding-right: 10px;" class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-							<span style = "padding-right: 10px;" class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-							<span style = "" class="glyphicon glyphicon-trash" aria-hidden="true"></span></p>		
-							
-							</td>
-							
-							
-							</tr><tr>
-							<th scope="row" >1</th>
-							<td>Track1</td>
-							<td>
-							<p class="text-right">
-							
-							<span style = "padding-right: 10px;" class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-							<span style = "padding-right: 10px;" class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-							<span style = "" class="glyphicon glyphicon-trash" aria-hidden="true"></span></p>		
-							
-							</td>
-							
-							
-							</tr>
-							</table></div>
-
-					
+							<tbody id = "modalTracklist">
+											
+							</tbody>
+						</table>
+						</div>
 					</div>
 				</div>
-	
             </div>
+					
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">
@@ -212,8 +244,162 @@
         </div>
     </div>
 </div>
-           
-<!-- /.container-fluid -->
+          <div class="modal fade" id="addLinkModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+		
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h4 class="modal-title" id="modalAlbum">Add Song </h4>
+            </div>
+			
+			<div style="height:350px" class="modal-body">
+			
+				 <div id="addSongInputGroup" class="form-group">
+					<input id="addSongInput" type="text" class="form-control" placeholder="insert link here">
+				</div>
+				
+				<div id="loadingAlbum" style ="text-align:center;padding:80px" class="hide">
+					<img src="loading.gif"></div>
+				
+				<div id="carouselAlbum" style ="padding-top:30px;"class="carousel slide hide" data-ride="carousel">
+				
+					<div id="AlbumCarouselBody"class="carousel-inner"  role="listbox">
+						
+    
+					</div>
+
+				<a class="left carousel-control" href="#carouselAlbum" role="button" data-slide="prev">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="right carousel-control" href="#carouselAlbum" role="button" data-slide="next">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			
+		</div>
+		
+
+
+		</div>	
+			<div class="modal-footer">
+			<a id="chooseOwnCoverButton" class="btn btn-default hide" href="#" role="button">choose own cover image</a>
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="addToQueueButton" type="button" onclick="addQueryClicked()" class="btn btn-danger" disabled>
+                    add to queue
+                </button>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</div>  
+	
+
+	<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Settings</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+	<div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Account</h4>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs nav-justified">
+
+
+<ul id="tabtest" class="nav nav-tabs">
+  <li class="active"><a href="#premTab" data-toggle="tab">Premium</a></li>
+  <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Spotify
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li><a href="#spotTab1" data-toggle="tab" >Account 1</a></li>
+      <li><a href="#spotTab2" data-toggle="tab" >Account 2</a></li>
+      <li><a href="#spotTab3" data-toggle="tab" >Account 3</a></li> 
+    </ul>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div id="premTab" class="tab-pane fade in active">
+
+	  <div class="page-header">
+  <h4>getMusic Premium Key</h4></div>
+  
+    <input type="text" class="form-control" placeholder="insert premium key here">
+  </div>
+  <div id="spotTab1" class="tab-pane fade">
+  <div class="page-header">
+  <h4>Account Settings (1)</h4></div>
+    <form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Username</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Username">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div> </form>
+  </div>
+  
+  <div id="spotTab2" class="tab-pane fade">
+      <div class="page-header">
+  <h4>Account Settings (2)</h4></div>
+    <form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Username</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Username">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div> </form>
+  </div>
+  <div id="spotTab3" class="tab-pane fade">
+     <div class="page-header">
+  <h4>Account Settings (3)</h4></div>
+    <form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Username</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Username">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div> </form>
+  </div>
+</div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <div class="container-fluid">
 	
@@ -223,7 +409,7 @@
 			           
 	</div>	</div>	</div>
 	
-	<table id="tableMain" class="table table-hover table-striped">
+	<table id="tableMain" class="table table-hover table-striped hide">
 		<thead>
 			<tr>
 				<th></th>
@@ -231,24 +417,12 @@
 				<th>Artist</th>
 				<th>Album</th>
 				<th>Progress</th>
+				<th></th>
 			</tr>
 		</thead>
 		
-		<tbody id ="tableQ">
-		<tr>
-			    <td style="width:50px"><img src="https://i1.sndcdn.com/artworks-000140098335-4qnzmi-t500x500.jpg" heigth="50px" width="50px" class="" alt="'+title+'"></td>
-				<td style = "vertical-align: middle;">asdfasdfasdf</td> 
-				<td style = "vertical-align: middle;">ffffffff</td>
-				<td style = "vertical-align: middle;">adfdddsasdasd</td>	
-				<td style = "vertical-align: bottom;">
-				<div class="progress" style = "width:80%">
-					<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"> </div> 
-				</div>
-				</td> </tr>
-
+		<tbody id ="tableQ" style = "letter-spacing: 1.5px">
 		</tbody>
-	
-  
 	</table>
 	
 
@@ -260,15 +434,5 @@
 			<li><a onclick="buttonClicked(3)">Queue</a></li>
 		</ul>		
 	</nav>
-
-<ul id="contextMenu" class="dropdown-menu" role="menu">
-    <li><a tabindex="-1" href="#">Action</a></li>
-    <li><a tabindex="-1" href="#">Another action</a></li>
-    <li><a tabindex="-1" href="#">Something else here</a></li>
-    <li class="divider"></li>
-    <li><a tabindex="-1" href="#">Separated link</a></li>
-</ul>
-
-
   
 </body></html>
