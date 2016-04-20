@@ -12,8 +12,15 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+	<link href="css/jquery.contextMenu.css" rel="stylesheet">
+	<link href="css/jquery.contextMenu.min.css" rel="stylesheet">
+
 
     <script src="js/jquery.min.js"></script>
+	<script src="js/jquery.ui.position.js"></script>
+	<script src="js/jquery.ui.position.min.js"></script>
+	<script src="js/jquery.contextMenu.js"></script>
+	<script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/scripts.js"></script>
 	<script type="text/javascript" src="qwebchannel.js"></script>
@@ -165,6 +172,33 @@
 		
 	}
 	
+	// ab hier context menu javascript
+	$(function() {
+        $.contextMenu({
+            selector: '.context-menu-one', 
+            callback: function(key, options) {
+                var m = "clicked: " + key;
+                window.console && console.log(m) || alert(m); 
+            },
+            items: {
+                "edit": {name: "Edit", icon: "edit"},
+                "cut": {name: "Cut", icon: "cut"},
+               copy: {name: "Copy", icon: "copy"},
+                "paste": {name: "Paste", icon: "paste"},
+                "delete": {name: "Delete", icon: "delete"},
+                "sep1": "---------",
+                "quit": {name: "Quit", icon: function(){
+                    return 'context-menu-icon context-menu-icon-quit';
+                }}
+            }
+        });
+
+        $('.context-menu-one').on('click', function(e){
+            console.log('clicked', this);
+        })    
+    });
+	
+	
 </script>
 
 </head>
@@ -192,7 +226,9 @@
         </div>
       </div>
     </nav>
-
+	<!-- ab hier context menu html-->
+	<span class="context-menu-one btn btn-neutral">right click me</span>
+		
     <div class="modal fade" id="albumModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
